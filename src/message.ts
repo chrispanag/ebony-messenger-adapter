@@ -8,22 +8,16 @@
  * 
  */
 
+import { MessageOptions, SerializedMessage } from "./interfaces";
 import { QuickReply } from "./quickreplies";
 import { Attachment } from "./attachments";
-
-interface MessageOptions {
-    text?: string | null, 
-    quickreplies?: QuickReply[] | null,
-    attachment?: Attachment | null,
-    templateID?: string | null
-}
 
 /** Message Class */
 export class Message {
 
     public text: string | null;
-    public quickreplies: {}[] | null;
-    public attachment: {} | null;
+    public quickreplies: QuickReply[] | null;
+    public attachment: Attachment | null;
     public templateID: string | null;
 
     /**
@@ -42,44 +36,30 @@ export class Message {
             throw new Error("Message: A message can't have text & attachment");
 
         this.text = text;
-
         this.quickreplies = quickreplies
-        if (quickreplies)
-            this.quickreplies = quickreplies.map(q => q.serialize());
-
         this.attachment = attachment;
-        if (attachment)
-            this.attachment = attachment.serialize();
-
         this.templateID = templateID;
     }
-    
+
     serialize(): SerializedMessage {
         if (this.attachment) {
+            const attachment = this.attachment.serialize();
             return {
-                attachment: this.attachment
+                attachment
             };
         }
 
         if (this.text) {
+            let quick_replies = null;
+            if (this.quickreplies)
+                quick_replies = this.quickreplies.map(q => q.serialize());
+
             return {
                 text: this.text,
-                quick_replies: this.quickreplies
+                quick_replies
             };
         }
 
-        throw new Error("No text or Attachment");
+        throw new Error("Serialize Message: No text or Attachment");
     }
-
-}
-
-type SerializedMessage = SerializedAttachmentMessage | SerializedTextMessage;
-
-interface SerializedAttachmentMessage {
-    attachment: {}
-};
-
-interface SerializedTextMessage {
-    text: string;
-    quick_replies: {}[] | null;
 }

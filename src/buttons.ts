@@ -1,3 +1,5 @@
+import { GenericTemplate } from "./templates";
+
 /**
  * ebony-framework
  * 
@@ -10,8 +12,6 @@
  * 
  */
 
-'use strict';
-
 /**
  * @typedef {object} SerializedButton 
  * @property {string} type
@@ -22,14 +22,14 @@
 export class Button {
 
     public type: string;
-    public params: any;
+    public params: {};
 
     /**
      * Creates a generic button
      * @param {string} type - The type of the button
      * @param {object} params - The various parameters the button includes
      */
-    constructor(type: string, params: any = {}) {
+    constructor(type: string, params: {} = {}) {
         this.type = type;
         this.params = params;
     }
@@ -37,7 +37,7 @@ export class Button {
     /**
      * @returns {SerializedButton} - An object that is understandable by Facebook
      */
-    serialize() {
+    serialize(): { type: string } {
         const basicButton = {
             type: this.type,
         }
@@ -92,7 +92,7 @@ export class CallButton extends Button {
  * @extends Button
  */
 export class ShareButton extends Button {
-    constructor(generic = null) {
+    constructor(generic: GenericTemplate | null = null) {
         let params = {}
         if (generic)
             params = {

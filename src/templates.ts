@@ -10,6 +10,7 @@
 
 import { TemplateAttachment } from './attachments';
 import { Button } from './buttons';
+import { ListElementInput, ElementInput } from './interfaces';
 
 /** 
  * A Button Template Class
@@ -22,10 +23,10 @@ export class ButtonTemplate extends TemplateAttachment {
      * @param {string} text - The text sent
      * @param {Button[]} buttons - An array of at most 3 buttons
      */
-    constructor(text: string, buttons: Button[] | null = null) {
+    constructor(text: string, buttons: Button[] = []) {
 
-        let serializedButtons = [];
-        if (buttons)
+        let serializedButtons: {}[] = [];
+        if (buttons.length > 0)
             serializedButtons = buttons.map(b => b.serialize());
 
         super({
@@ -102,7 +103,7 @@ export class MediaTemplate extends TemplateAttachment {
      * @param {Button[]} buttons - The buttons of the MediaTemplate
      */
     constructor(attachment_id: string, buttons: Button[] | null = null) {
-        let serializedButtons = [];
+        let serializedButtons: {}[] = [];
         if (buttons)
             serializedButtons = buttons.map(b => b.serialize());
 
@@ -141,7 +142,7 @@ export class MediaTemplate extends TemplateAttachment {
  * @returns {cardElement} - Returns a card element for use in a generic template
  */
 export function cardElement({ title = null, subtitle = null, image_url = null, buttons = [] }: ElementInput) {
-    let serializedButtons = [];
+    let serializedButtons: {}[] = [];
     if (buttons)
         serializedButtons = buttons.map(b => b.serialize());
 
@@ -177,7 +178,7 @@ export function cardElement({ title = null, subtitle = null, image_url = null, b
  * @returns {listElement} - Returns a list element for use in a list template
  */
 export function listElement({ title = null, subtitle = null, image_url = null, action = null, buttons = [] }: ListElementInput) {
-    let serializedButtons = [];
+    let serializedButtons: {}[] = [];
     if (buttons.length > 0)
         serializedButtons = buttons.map(b => b.serialize());
 
@@ -188,15 +189,4 @@ export function listElement({ title = null, subtitle = null, image_url = null, a
         default_action: action,
         buttons: serializedButtons
     };
-}
-
-export interface ElementInput { 
-    title?: string | null, 
-    subtitle?: string | null, 
-    image_url?: string | null,
-    buttons?: Button[]
-}
-
-export interface ListElementInput extends ElementInput {
-    action?: string | null
 }

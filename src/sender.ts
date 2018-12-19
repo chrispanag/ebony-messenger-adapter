@@ -11,12 +11,7 @@
 'use strict';
 
 import { Message } from "./message";
-
-interface MessagingOptions {
-	tag?: string | null;
-	notification_type?: string;	
-	type?: string;
-}
+import { MessageBody, MessagingOptions } from "./interfaces";
 
 /**
 * @typedef {object} MessagingOptions
@@ -30,7 +25,7 @@ interface MessagingOptions {
  * @param {object} fb - An instance of the FB API Class 
  * @returns {function} - Returns the sender function
  */
-export function senderFactory(fb: { sendAPI: (body: {}) => Promise<any> }) {
+export function senderFactory(fb: { sendAPI: (body: MessageBody) => Promise<any> }) {
 
     /**
      * Sends a message to the user with the id

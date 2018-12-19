@@ -12,14 +12,14 @@
 export class Attachment {
 
     public type: string;
-    public payload: string;
+    public payload: {};
 
     /**
      * Create a generic attachment
      * @param {string} type - The type of the attachment
      * @param {object} payload - The attachment
      */
-    constructor(type: string, payload: any) {
+    constructor(type: string, payload: {}) {
         this.type = type;
         this.payload = payload;
     }
@@ -53,7 +53,7 @@ export class TemplateAttachment extends Attachment {
      * A template attachment (List, Button or Generic)
      * @param {object} template - The template included within this attachment
      */
-    constructor(template: any) {
+    constructor(template: {}) {
         super("template", template);
     }
 }

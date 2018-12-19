@@ -8,14 +8,14 @@
  * 
  */
 
-'use strict';
+import { isObjectPayload, SerializedQuickreply } from './interfaces';
 
 /** The generic QuickReply class */
 export class QuickReply {
 
     public title: string;
     public content_type: string;
-    public payload: any;
+    public payload: string;
 
     /**
      * Creates a QuickReply
@@ -23,17 +23,17 @@ export class QuickReply {
      * @param {string} title - The title of the QuickReply
      * @param {?object|?string} payload - The payload sent when the QuickReply is pushed
      */
-    constructor(content_type: string, title: string, payload: any = "") {
-        let serializedPayload = payload;
-        if (typeof payload === 'object')
-            serializedPayload = JSON.stringify(payload);
+    constructor(content_type: string, title: string, payload: string | {} = "") {
+        let serializedPayload = JSON.stringify(payload);
+        if (!isObjectPayload(payload))
+            serializedPayload = payload;
 
         this.title = title;
         this.payload = serializedPayload;
         this.content_type = content_type;
     }
 
-    serialize() {
+    serialize(): SerializedQuickreply {
         return {
             content_type: this.content_type,
             title: this.title,
