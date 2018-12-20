@@ -1,6 +1,6 @@
 # EBoNy Framework - SendAPI Submodule
 
-A subsystem for EBoNy Framework compatible SendAPI message elements
+A subsystem for EBoNy Framework compatible SendAPI message elements.
 
 ## Documentation
 
