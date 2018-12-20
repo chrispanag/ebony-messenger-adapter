@@ -26,8 +26,8 @@ const message = new Message(options);
 const options = {
     text: "Hello World",
     quickreplies: [
-        new QuickReply("Hello", "hello"),
-        new QuickReply("World", "world")
+        new TextQuickReply("Hello", "hello"),
+        new LocationQuickReply()
     ]
 };
 
