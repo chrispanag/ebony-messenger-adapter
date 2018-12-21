@@ -241,3 +241,39 @@ new ShareButton(share_contents);
 ```javascript
 new CallButton("Test", "+301234567891");
 ```
+
+### Sender
+
+Params:
+
+* **fb:** The sending library used. Must have a `sendAPI` property.
+
+Returns:
+
+The send function.
+
+```javascript
+const send = sender(fb);
+```
+
+### Send Function
+
+Params:
+
+* **id**: The PSID of the user
+* **message**: A Message Object
+* **options**: The next object
+
+``` javascript
+{
+    tag,                // The message tag string.  
+    notification_type,  // Push notification type (REGULAR, SILENT_PUSH, NO_PUSH)
+    type                // The messaging type of the message being sent.
+}
+```
+
+Example:
+
+```javascript
+send(id, message, options);
+```
