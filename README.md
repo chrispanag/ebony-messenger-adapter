@@ -224,8 +224,16 @@ new PostbackButton("Title", "payload");
 
 #### Share Button
 
+Params:
+
+* **share_contents:** The message that you wish the recipient of the share to see, if it is different from the one this button is attached to. The format follows that used in Send API. (Generic Template)
+
+**share_contents only supports the following:**
+
+Template used must be Generic Template. Maximum of one URL button on the template. If no buttons are specified, the buttons property on the generic template must be set to an empty array.
+
 ```javascript
-new ShareButton();
+new ShareButton(share_contents);
 ```
 
 #### Call Button
