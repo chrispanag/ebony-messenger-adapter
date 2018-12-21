@@ -207,3 +207,29 @@ cardElement params:
 * **image_url:** The URL of the image to display in the template.
 * **buttons:** An array of buttons to append to the template. A maximum of 3 buttons per element is supported. (Array of Button)
 * **default_action:** The default action executed when the template is tapped. Accepts the same properties as URL button, except title (Wrongly Implemented TODO).
+
+### Buttons
+
+#### URL Button
+
+```javascript
+new UrlButton("Title", "http://example.com");
+```
+
+#### Postback Button
+
+```javascript
+new PostbackButton("Title", "payload");
+```
+
+#### Share Button
+
+```javascript
+new ShareButton();
+```
+
+#### Call Button
+
+```javascript
+new CallButton("Test", "+301234567891");
+```
