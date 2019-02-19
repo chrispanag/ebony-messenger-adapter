@@ -12,7 +12,6 @@ import * as attachments from './attachments';
 import * as buttons from './buttons';
 import * as quickreplies from './quickreplies';
 import * as templates from './templates';
-import { senderFactory as sender } from './sender';
 import { Message } from './message';
 
 const elements = {
@@ -24,6 +23,5 @@ const elements = {
 
 export {
     Message,
-    sender,
     elements
 }

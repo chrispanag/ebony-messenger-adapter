@@ -16,5 +16,19 @@ export default class GenericAdapter {
         this.handlers = {};
         this.contextLoader = contextLoader
     }
+
+    public sender() {
+        return (id: string, message: any, options: any) => {
+            console.log(message);
+            return Promise.resolve();
+        }
+    }
+
+    public startsTyping() {
+        return (id: string) => {
+            console.log("Typing...");
+            return Promise.resolve();
+        }
+    }
 }
 
