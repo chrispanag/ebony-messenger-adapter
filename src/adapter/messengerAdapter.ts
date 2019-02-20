@@ -3,6 +3,8 @@ import webhook from './webhook';
 import { Request, Response, RequestHandler } from 'express';
 import { senderFactory } from './sender';
 import { UserDataFields } from "./interfaces/messengerAPI";
+import messagingWebhook from '../webhooks/messaging';
+import MessengerUser from './MessengerUser';
 
 type ContextLoader = any;
 
@@ -28,9 +30,11 @@ export default class MessengerAdapter extends GenericAdapter {
         this.appSecret = appSecret;
         this.pageToken = pageToken;
 
+        const messaging = messagingWebhook({ userLoader: MessengerUser.userLoader(this.pageToken) });
+        
         // Facebook specific endpoints
         this.webhook.get(route, this.validationEndpoint());
-        this.webhook.post(route, webhook(pageId));
+        this.webhook.post(route, webhook(pageId, { messaging }));
     }
 
     private validationEndpoint(): RequestHandler {

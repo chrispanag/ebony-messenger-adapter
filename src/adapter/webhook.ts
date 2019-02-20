@@ -9,16 +9,17 @@ interface MessengerWebhooks {
 
 export default function webhook(page_id: string, { messaging, standby, changes }: MessengerWebhooks = {}): RequestHandler {
     return (req: Request, res: Response) => {
+        res.sendStatus(200);
         const data = req.body as MessengerWebhookBody;
-
         if (data.object === 'page') {
             data.entry.forEach(e => {
                 // Main messaging webhook
                 if (e.messaging) {
                     if (messaging) {
-                        messaging(e);
+                        e.messaging.forEach(e => messaging(e));
                     } else {
-                        console.log(`No messaging webhook to process ${e}`);
+                        console.log(`No messaging webhook to process: `);
+                        console.log(e);
                     }
                     return;
                 }
@@ -27,7 +28,8 @@ export default function webhook(page_id: string, { messaging, standby, changes }
                     if (standby) {
                         standby(e);
                     } else {
-                        console.log(`No standby webhook to process ${e}`);
+                        console.log(`No standby webhook to process:`);
+                        console.log(e);
                     }
                     return;
                 }
@@ -36,7 +38,8 @@ export default function webhook(page_id: string, { messaging, standby, changes }
                     if (changes) {
                         changes(e);
                     } else {
-                        console.log(`No changes webhook to process ${e}`);
+                        console.log(`No changes webhook to process: `);
+                        console.log(e);
                     }
                     return;
                 }
@@ -44,7 +47,5 @@ export default function webhook(page_id: string, { messaging, standby, changes }
         } else {
             console.log("Webhook message not from FB Page");
         }
-
-        return res.sendStatus(200);
     }
 }

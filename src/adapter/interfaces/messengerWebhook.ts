@@ -9,7 +9,7 @@ export interface FacebookWebhookEntry {
 
     messaging?: MessagingEntry[];
     changes?: any[];
-    standby?: any[];
+    standby?: Standby[];
 }
 
 export interface MessagingEntry {
@@ -25,7 +25,6 @@ export interface MessagingEntry {
     delivery?: Delivery;
     referral?: Referral;
     postback?: Postback;
-    standby?: Standby;
     pass_thread_control?: PassThreadControl;
     take_thread_control?: TakeThreadControl;
     request_thread_control?: RequestThreadControl;
