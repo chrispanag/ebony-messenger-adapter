@@ -1,6 +1,7 @@
 import GenericAdapter from './adapter';
 import webhook from './webhook';
 import { Request, Response, RequestHandler } from 'express';
+import { senderFactory } from './sender';
 
 type ContextLoader = any;
 
@@ -46,23 +47,39 @@ export default class MessengerAdapter extends GenericAdapter {
     }
 
     public sender() {
-        // TODO: Implement Sender
         const pageToken = this.pageToken;
-        
-        return (id: string, message: any, options: any) => {
-            console.log(message);
-            return Promise.resolve();
-        }
+        const { send } = senderFactory(pageToken);
+
+        return send;
     }
 
     public startsTyping() {
-        // TODO: Implement typing
         const pageToken = this.pageToken;
+        const { senderAction } = senderFactory(pageToken);
 
-        return (id: string) => {
-            console.log("Typing...");
-            return Promise.resolve();
-        }
+        return (id: string) => senderAction(id, "typing_on");
+    }
+
+    public stopsTyping() {
+        const pageToken = this.pageToken;
+        const { senderAction } = senderFactory(pageToken);
+        
+        return (id: string) => senderAction(id, "typing_on");
+    }
+
+    public markSeen() {
+        const pageToken = this.pageToken;
+        const { senderAction } = senderFactory(pageToken);
+        
+        return (id: string) => senderAction(id, "mark_seen");
+    }
+
+    public getUserData() {
+        const pageToken = this.pageToken;
+        const { getUserData } = senderFactory(pageToken);
+        
+        return getUserData;
     }
 
 }
+

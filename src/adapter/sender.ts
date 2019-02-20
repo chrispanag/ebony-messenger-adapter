@@ -11,7 +11,9 @@
 'use strict';
 
 import { Message } from "../sendAPI/message";
-import { MessageBody, MessagingOptions } from "../sendAPI/interfaces";
+import { SendAPIBody, UserDataFields } from "./interfaces/messengerAPI";
+import { MessagingOptions } from "../sendAPI/interfaces";
+import fetch from 'node-fetch';
 
 /**
 * @typedef {object} MessagingOptions
@@ -25,7 +27,9 @@ import { MessageBody, MessagingOptions } from "../sendAPI/interfaces";
  * @param {object} fb - An instance of the FB API Class 
  * @returns {function} - Returns the sender function
  */
-export function senderFactory(fb: { sendAPI: (body: MessageBody) => Promise<any> }) {
+export function senderFactory(pageToken: string) {
+
+    const qs = `access_token=${encodeURIComponent(pageToken)}`;
 
     /**
      * Sends a message to the user with the id
@@ -34,29 +38,79 @@ export function senderFactory(fb: { sendAPI: (body: MessageBody) => Promise<any>
      * @param {?MessagingOptions} options - The sending options (OPTIONAL)
      * @returns {Promise} - Returns a promise
      */
-	function send(id: string, message: Message, options: MessagingOptions = {}) {
-		const { tag = null, notification_type = "REGULAR", type = "RESPONSE" } = options;
+    function send(id: string, message: Message, options: MessagingOptions = {}) {
+        const { tag = null, notification_type = "REGULAR", type = "RESPONSE" } = options;
 
-		if (!id)
-			throw new Error("[Error] Send: No user id is specified!");
+        if (!id)
+            throw new Error("[Error] Send: No user id is specified!");
 
-		if (!message)
-			throw new Error("[Error] No message passed!");
+        if (!message)
+            throw new Error("[Error] No message passed!");
 
-		let messaging_type = type;
-		if (tag)
-			messaging_type = "MESSAGE_TAG";
+        let messaging_type = type;
+        if (tag)
+            messaging_type = "MESSAGE_TAG";
 
-		const body = {
-			recipient: { id },
-			message: message.serialize(),
-			notification_type,
-			messaging_type
-		};
+        const body = {
+            recipient: { id },
+            message: message.serialize(),
+            notification_type,
+            messaging_type
+        };
 
-		// TODO implement logger in here.
-		return fb.sendAPI(body);
-	}
+        // TODO implement logger in here.
+        return sendAPI(body, qs);
+    }
 
-	return send;
+    function senderAction(id: string, action: string) {
+        const body = {
+            recipient: { id },
+            sender_action: action
+        }
+
+        return sendAPI(body, qs);
+    }
+
+    function getUserData(id: string, fields: UserDataFields[]) {
+        return getUserDataCall(id, fields, qs);
+    }
+
+    return {
+        send,
+        senderAction,
+        getUserData
+    };
+}
+
+async function sendAPI(body: SendAPIBody, qs: string) {
+    try {
+        const rsp = await fetch(`https://graph.facebook.com/me/messages?${qs}`);
+        const json = await rsp.json();
+
+        if (json.error && json.error.message) {
+            throw new Error(json.error.message);
+        }
+
+        return json;
+    } catch (err) {
+        // TODO: Handle errors
+        throw err;
+    }
+}
+
+async function getUserDataCall(id: string, fields: UserDataFields[], qs: string) {
+    const query = fields.join(',');
+    try {
+        const rsp = await fetch(`https://graph.facebook.com/v2.11/${id}?fields=${query}&${qs}`);
+        const json = await rsp.json();
+
+        if (json.error && json.error.message) {
+            throw new Error(json.error.message);
+        }
+
+        return json;
+    } catch (err) {
+        // TODO: Handle errors
+        throw err;
+    }
 }
