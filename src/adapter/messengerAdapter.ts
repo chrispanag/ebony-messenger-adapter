@@ -1,7 +1,8 @@
-import GenericAdapter from './adapter';
+import { GenericAdapter } from 'ebony-framework';
 import webhook from './webhook';
 import { Request, Response, RequestHandler } from 'express';
 import { senderFactory } from './sender';
+import { UserDataFields } from "./interfaces/messengerAPI";
 
 type ContextLoader = any;
 
@@ -40,7 +41,7 @@ export default class MessengerAdapter extends GenericAdapter {
                 console.log("Validating webhook");
                 return res.status(200).send(req.query['hub.challenge']);
             }
-    
+
             console.error("Failed validation. Make sure the validation tokens match.");
             return res.sendStatus(400);
         }
@@ -63,21 +64,21 @@ export default class MessengerAdapter extends GenericAdapter {
     public stopsTyping() {
         const pageToken = this.pageToken;
         const { senderAction } = senderFactory(pageToken);
-        
+
         return (id: string) => senderAction(id, "typing_on");
     }
 
     public markSeen() {
         const pageToken = this.pageToken;
         const { senderAction } = senderFactory(pageToken);
-        
+
         return (id: string) => senderAction(id, "mark_seen");
     }
 
     public getUserData() {
         const pageToken = this.pageToken;
         const { getUserData } = senderFactory(pageToken);
-        
+
         return getUserData;
     }
 
