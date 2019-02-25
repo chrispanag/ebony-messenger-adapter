@@ -7,19 +7,26 @@ interface MessagingWebhookOptions {
     userLoader: (id: string) => Promise<MessengerUser>;
 }
 
-export default function messagingWebhook({ userLoader, routers }: MessagingWebhookOptions) {
+export default function messagingWebhook({ userLoader, routers }: MessagingWebhookOptions): (e: MessagingEntry) => Promise<void> {
     return async (e: MessagingEntry) => {
         const user = await userLoader(e.sender.id);
         if (e.message) {
             if (e.message.text) {
                 if (e.message.quick_reply) {
-                    // TODO: Postbacks and text handler 
+                    // TODO: Postbacks and text handler
+                    const qr = e.message.quick_reply;
+                    if (qr.payload) {
+                        routerExists(routers.PostbackRouter).stringPayloadHandler(e, qr.payload, user);
+                        return;
+                    }
                     throw new Error("Not implemented");
                 }
-                // TODO: Text Handler
-                throw new Error("Not implemented");
+                // TODO: Improve dat
+                (routerExists(routers.TextMatcher).ruleMatcher(e.message))(user);
+                return;
             }
             if (e.message.attachments) {
+                
                 // TODO: attachment handler
                 throw new Error("Not implemented");
             }
@@ -31,6 +38,11 @@ export default function messagingWebhook({ userLoader, routers }: MessagingWebho
                 return;
             }
             if (e.postback.referral) {
+                const referral = e.postback.referral;
+                if (referral.ref) {
+                    routerExists(routers.ReferralsRouter).referralsRouter(e, user,  referral.ref);
+                    return;
+                }
                 // TODO: Referral handler
                 throw new Error("Not implemented");
             }
@@ -38,6 +50,11 @@ export default function messagingWebhook({ userLoader, routers }: MessagingWebho
             throw new Error("Not implemented");
         }
         if (e.referral) {
+            const referral = e.referral;
+            if (referral.ref) {
+                routerExists(routers.ReferralsRouter).referralsRouter(e, user,  referral.ref);
+                return;
+            }
             // TODO: Referral handler
             throw new Error("Not implemented");
         }
