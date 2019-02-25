@@ -32,25 +32,25 @@ export default class MessengerUser extends User {
         const userData = await this.getUserData(this.id, [UserDataFields.firstName, UserDataFields.lastName, UserDataFields.gender]);
         const { first_name = '', last_name = '', gender = "male" } = userData;
 
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = first_name;
+        this.lastName = last_name;
         this.gender = gender;
     }
 
     public static userLoader(pageToken: string) {
         return async (id: string) => {
             try {
-                const userData = await User.findOne({ id });
+                const userData = await User.findByProviderId(id);
                 if (!userData) {
                     const newUser = new MessengerUser({
                         id
                     }, pageToken)
-                    newUser.getFacebookData();
+                    await newUser.getFacebookData();
                     newUser.save();
 
                     return newUser;
                 }
-
+                
                 return new MessengerUser(userData, pageToken);
             } catch (err) {
                 throw err;

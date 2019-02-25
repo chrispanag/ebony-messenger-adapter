@@ -2,9 +2,9 @@ import { GenericAdapter } from 'ebony-framework';
 import webhook from './webhook';
 import { Request, Response, RequestHandler } from 'express';
 import { senderFactory } from './sender';
-import { UserDataFields } from "./interfaces/messengerAPI";
 import messagingWebhook from '../webhooks/messaging';
 import MessengerUser from './MessengerUser';
+import { UserDataFields } from './interfaces/messengerAPI';
 
 type ContextLoader = any;
 
@@ -20,6 +20,8 @@ export default class MessengerAdapter extends GenericAdapter {
     private webhookKey: string;
     private appSecret: string;
     private pageToken: string;
+    private route: string;
+    private pageId: string;
 
     constructor(contextLoader: ContextLoader, options: MessengerWebhookOptions) {
         super(contextLoader);
@@ -29,12 +31,17 @@ export default class MessengerAdapter extends GenericAdapter {
         this.webhookKey = webhookKey;
         this.appSecret = appSecret;
         this.pageToken = pageToken;
-
-        const messaging = messagingWebhook({ userLoader: MessengerUser.userLoader(this.pageToken) });
+        this.pageId = pageId;
+        this.route = route;
         
+    }
+
+    initWebhook() {
+        const messaging = messagingWebhook({ userLoader: MessengerUser.userLoader(this.pageToken), routers: this.routers });
+
         // Facebook specific endpoints
-        this.webhook.get(route, this.validationEndpoint());
-        this.webhook.post(route, webhook(pageId, { messaging }));
+        this.webhook.get(this.route, this.validationEndpoint());
+        this.webhook.post(this.route, webhook(this.pageId, { messaging }));
     }
 
     private validationEndpoint(): RequestHandler {

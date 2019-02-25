@@ -1,16 +1,15 @@
-import { FacebookWebhookEntry, MessagingEntry } from "../adapter/interfaces/messengerWebhook";
-import PostbackRouter from 'ebony-framework/build/routers/PostbackRouter'
+import { MessagingEntry } from "../adapter/interfaces/messengerWebhook";
+import { IRouters } from "ebony-framework/build/adapter"
 import MessengerUser from "../adapter/MessengerUser";
 
 interface MessagingWebhookOptions {
-    PostbackRouter?: PostbackRouter
+    routers: IRouters;
     userLoader: (id: string) => Promise<MessengerUser>;
 }
 
-export default function messagingWebhook({ userLoader }: MessagingWebhookOptions) {
+export default function messagingWebhook({ userLoader, routers }: MessagingWebhookOptions) {
     return async (e: MessagingEntry) => {
         const user = await userLoader(e.sender.id);
-        console.log(user);
         if (e.message) {
             if (e.message.text) {
                 if (e.message.quick_reply) {
@@ -28,8 +27,8 @@ export default function messagingWebhook({ userLoader }: MessagingWebhookOptions
         }
         if (e.postback) {
             if (e.postback.payload) {
-                // TODO: Postback Handler
-                throw new Error("Not implemented");
+                routerExists(routers.PostbackRouter).stringPayloadHandler(e, e.postback.payload, user);
+                return;
             }
             if (e.postback.referral) {
                 // TODO: Referral handler
@@ -58,4 +57,12 @@ export default function messagingWebhook({ userLoader }: MessagingWebhookOptions
             throw new Error("Not implemented");
         }
     }
+}
+
+function routerExists<T>(router: T | undefined): T | never {
+    if (typeof router === 'undefined') {
+        throw new Error("Router is undefined");
+    }
+
+    return router;
 }

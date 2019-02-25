@@ -84,7 +84,15 @@ export function senderFactory(pageToken: string) {
 
 async function sendAPI(body: SendAPIBody, qs: string) {
     try {
-        const rsp = await fetch(`https://graph.facebook.com/me/messages?${qs}`);
+        const rsp = await fetch(`https://graph.facebook.com/me/messages?${qs}`, {
+            body: JSON.stringify(body),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        console.log(JSON.stringify(body));
         const json = await rsp.json();
 
         if (json.error && json.error.message) {
