@@ -58,11 +58,12 @@ export class UrlButton extends Button {
      * @param {string} url - The url the button points to
      * @param {?string} webview_height_ratio - The height of the webview viewport
      */
-    constructor(title: string, url: string, webview_height_ratio = "full") {
+    constructor(title: string, url: string, webview_height_ratio = "full", messenger_extensions: boolean = false) {
         super("web_url", {
             title,
             url,
-            webview_height_ratio
+            webview_height_ratio,
+            messenger_extensions
         });
     }
 }
