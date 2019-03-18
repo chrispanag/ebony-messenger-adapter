@@ -1,4 +1,4 @@
-import { GenericAdapter } from 'ebony-framework';
+import { GenericAdapter, User } from 'ebony-framework';
 import webhook from './webhook';
 import { Request, Response, RequestHandler } from 'express';
 import { senderFactory } from './sender';
@@ -14,7 +14,7 @@ export interface MessengerWebhookOptions {
     pageId: string;
     appSecret: string;
     pageToken: string;
-    userModel?: new <Τ extends MessengerUser>() => Τ;
+    userModel?: (new <T extends MessengerUser>(...params: any) => T) | (new (...params: any) => MessengerUser)
 }
 
 export default class MessengerAdapter extends GenericAdapter {
