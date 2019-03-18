@@ -14,6 +14,7 @@ export interface MessengerWebhookOptions {
     pageId: string;
     appSecret: string;
     pageToken: string;
+    userModel?: new <Τ extends MessengerUser>() => Τ;
 }
 
 export default class MessengerAdapter extends GenericAdapter {
@@ -23,17 +24,19 @@ export default class MessengerAdapter extends GenericAdapter {
     private route: string;
     private pageId: string;
 
-    constructor(contextLoader: ContextLoader, options: MessengerWebhookOptions) {
-        super(contextLoader);
+    constructor(options: MessengerWebhookOptions) {
+        super();
 
-        const { route = '/fb', webhookKey = 'ebony123', pageId, pageToken, appSecret } = options;
+        const { route = '/fb', webhookKey = 'ebony123', pageId, pageToken, appSecret, userModel = MessengerUser } = options;
 
         this.webhookKey = webhookKey;
         this.appSecret = appSecret;
         this.pageToken = pageToken;
         this.pageId = pageId;
         this.route = route;
-        
+
+        this.userModel = userModel;
+
     }
 
     initWebhook() {

@@ -8,8 +8,6 @@
  * 
  */
 
-'use strict';
-
 import { Message } from "../sendAPI/message";
 import { SendAPIBody, UserDataFields } from "./interfaces/messengerAPI";
 import { MessagingOptions } from "../sendAPI/interfaces";
@@ -24,8 +22,6 @@ import fetch from 'node-fetch';
 
 /**
  * Creates a sender function
- * @param {object} fb - An instance of the FB API Class 
- * @returns {function} - Returns the sender function
  */
 export function senderFactory(pageToken: string) {
 
@@ -92,7 +88,6 @@ async function sendAPI(body: SendAPIBody, qs: string) {
             }
         });
 
-        console.log(JSON.stringify(body));
         const json = await rsp.json();
 
         if (json.error && json.error.message) {
