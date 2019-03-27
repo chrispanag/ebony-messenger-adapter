@@ -6,8 +6,6 @@ import messagingWebhook from '../webhooks/messaging';
 import MessengerUser from './MessengerUser';
 import { UserDataFields } from './interfaces/messengerAPI';
 
-type ContextLoader = any;
-
 export interface MessengerWebhookOptions {
     webhookKey?: string;
     route?: string;
