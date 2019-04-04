@@ -59,7 +59,7 @@ export default class MessengerAdapter extends GenericAdapter {
         }
     }
 
-    public sender() {
+    public get sender() {
         const pageToken = this.pageToken;
         const { send } = senderFactory(pageToken);
 
