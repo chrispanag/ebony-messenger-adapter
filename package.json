@@ -29,7 +29,7 @@
     "@types/node-fetch": "^2.1.6",
     "express": "^4.16.4",
     "node-fetch": "^2.3.0",
-    "ebony-framework": "chrispanag/ebony#typescript",
+    "ebony-framework": "chrispanag/ebony#typescript"
   },
   "devDependencies": {
     "gts": "^0.9.0",
