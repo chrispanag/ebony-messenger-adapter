@@ -44,7 +44,7 @@ export default class MessengerUser extends User {
                 if (!userData) {
                     const newUser = new MessengerUser({
                         id
-                    }, pageToken)
+                    }, pageToken);
                     await newUser.getFacebookData();
                     newUser.save();
 

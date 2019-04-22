@@ -5,7 +5,7 @@
   "main": "./build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo \"build\"",
+    "build": "npx tsc",
     "prepare": "npm run build"
   },
   "types": "./build/index.d.ts",
