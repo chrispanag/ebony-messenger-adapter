@@ -7,10 +7,8 @@ export default class MessengerUser extends User {
 
     constructor(document: any, pageToken: string) {
         super(document);
-
-        if (!this.provider) {
-            this.provider = 'fbmessenger';
-        }
+        
+        this.provider = User.providerName;
 
         const { getUserData } = senderFactory(pageToken);
         this.getUserData = getUserData;
