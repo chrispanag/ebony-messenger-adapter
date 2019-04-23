@@ -7,8 +7,6 @@ export default class MessengerUser extends User {
 
     constructor(document: any, pageToken: string) {
         super(document);
-        
-        this.provider = User.providerName;
 
         const { getUserData } = senderFactory(pageToken);
         this.getUserData = getUserData;
@@ -41,7 +39,8 @@ export default class MessengerUser extends User {
                 const userData = await User.findByProviderId(id);
                 if (!userData) {
                     const newUser = new MessengerUser({
-                        id
+                        id,
+                        provider: MessengerUser.providerName
                     }, pageToken);
                     await newUser.getFacebookData();
                     newUser.save();
