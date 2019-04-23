@@ -3,7 +3,7 @@ import webhook from './webhook';
 import { Request, Response, RequestHandler } from 'express';
 import { senderFactory } from './sender';
 import messagingWebhook from '../webhooks/messaging';
-import { MessengerUser } from './MessengerUser';
+import MessengerUser from './MessengerUser';
 import { UserDataFields } from './interfaces/messengerAPI';
 
 export interface MessengerWebhookOptions {

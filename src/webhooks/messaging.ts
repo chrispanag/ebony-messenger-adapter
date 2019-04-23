@@ -1,6 +1,6 @@
 import { MessagingEntry } from "../adapter/interfaces/messengerWebhook";
 import { IRouters } from "ebony-framework/build/adapter"
-import { MessengerUser } from "../adapter/MessengerUser";
+import MessengerUser from "../adapter/MessengerUser";
 
 interface MessagingWebhookOptions {
     routers: IRouters;

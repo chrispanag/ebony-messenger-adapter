@@ -2,7 +2,7 @@ import User from "ebony-framework/build/models/User";
 import { senderFactory } from './sender';
 import { UserDataFields } from "./interfaces/messengerAPI";
 
-export class MessengerUser extends User {
+export default class MessengerUser extends User {
     private getUserData: (id: string, fields: UserDataFields[]) => Promise<any>;
 
     constructor(document: any, pageToken: string) {
@@ -55,5 +55,3 @@ export class MessengerUser extends User {
         }
     }
 }
-
-export default () => Object.assign({}, MessengerUser);
