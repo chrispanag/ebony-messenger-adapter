@@ -43,7 +43,7 @@ export default class MessengerUser extends User {
                         provider: MessengerUser.providerName
                     }, pageToken);
                     await newUser.getFacebookData();
-                    newUser.save();
+                    await newUser.save();
 
                     return newUser;
                 }
