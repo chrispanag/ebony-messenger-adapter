@@ -3,7 +3,7 @@ import webhook from './webhook';
 import { Request, Response, RequestHandler } from 'express';
 import { senderFactory } from './sender';
 import messagingWebhook from '../webhooks/messaging';
-import MessengerUser from './MessengerUser';
+import { MessengerUser } from './MessengerUser';
 import { UserDataFields } from './interfaces/messengerAPI';
 
 export interface MessengerWebhookOptions {
@@ -12,7 +12,7 @@ export interface MessengerWebhookOptions {
     pageId: string;
     appSecret: string;
     pageToken: string;
-    userModel?: { new <T extends MessengerUser>(...params: any): T, providerName: string } | { new (...params: any): User, providerName: string}
+    userModel?: { new <T extends MessengerUser>(...params: any): T, providerName: string } | { new(...params: any): User, providerName: string }
 }
 
 export default class MessengerAdapter extends GenericAdapter {

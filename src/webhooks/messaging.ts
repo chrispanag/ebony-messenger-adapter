@@ -1,6 +1,6 @@
 import { MessagingEntry } from "../adapter/interfaces/messengerWebhook";
 import { IRouters } from "ebony-framework/build/adapter"
-import MessengerUser from "../adapter/MessengerUser";
+import { MessengerUser } from "../adapter/MessengerUser";
 
 interface MessagingWebhookOptions {
     routers: IRouters;
@@ -26,7 +26,7 @@ export default function messagingWebhook({ userLoader, routers }: MessagingWebho
                 return;
             }
             if (e.message.attachments) {
-                
+
                 // TODO: attachment handler
                 throw new Error("Not implemented");
             }
@@ -40,7 +40,7 @@ export default function messagingWebhook({ userLoader, routers }: MessagingWebho
             if (e.postback.referral) {
                 const referral = e.postback.referral;
                 if (referral.ref) {
-                    routerExists(routers.ReferralsRouter).referralsRouter(e, user,  referral.ref);
+                    routerExists(routers.ReferralsRouter).referralsRouter(e, user, referral.ref);
                     return;
                 }
                 // TODO: Referral handler
@@ -52,7 +52,7 @@ export default function messagingWebhook({ userLoader, routers }: MessagingWebho
         if (e.referral) {
             const referral = e.referral;
             if (referral.ref) {
-                routerExists(routers.ReferralsRouter).referralsRouter(e, user,  referral.ref);
+                routerExists(routers.ReferralsRouter).referralsRouter(e, user, referral.ref);
                 return;
             }
             // TODO: Referral handler
