@@ -12,7 +12,7 @@ export interface MessengerWebhookOptions {
     pageId: string;
     appSecret: string;
     pageToken: string;
-    userModel: { new <T extends MessengerUser>(...params: any): T, providerName: string } | { new (...params: any): User, providerName: string}
+    userModel?: { new <T extends MessengerUser>(...params: any): T, providerName: string } | { new (...params: any): User, providerName: string}
 }
 
 export default class MessengerAdapter extends GenericAdapter {
