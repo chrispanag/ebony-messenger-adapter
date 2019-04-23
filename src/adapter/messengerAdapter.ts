@@ -12,7 +12,7 @@ export interface MessengerWebhookOptions {
     pageId: string;
     appSecret: string;
     pageToken: string;
-    userModel?: { new <T extends MessengerUser>(...params: any): T, providerName: string } | { new(...params: any): User, providerName: string }
+    userModel?: { new <T extends MessengerUser>(...params: any): T, providerName: string, userLoader: (...params: any) => any } | { new(...params: any): User, providerName: string, userLoader: (...params: any) => any }
 }
 
 export default class MessengerAdapter extends GenericAdapter {
@@ -35,7 +35,7 @@ export default class MessengerAdapter extends GenericAdapter {
     }
 
     initWebhook() {
-        const messaging = messagingWebhook({ userLoader: MessengerUser.userLoader(this.pageToken), routers: this.routers });
+        const messaging = messagingWebhook({ userLoader: this.userModel.userLoader(this.pageToken), routers: this.routers });
 
         // Facebook specific endpoints
         this.webhook.get(this.route, this.validationEndpoint());
