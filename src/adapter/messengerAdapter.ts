@@ -23,18 +23,15 @@ export default class MessengerAdapter extends GenericAdapter {
     private pageId: string;
 
     constructor(options: MessengerWebhookOptions) {
-        super('messenger');
-
         const { route = '/fb', webhookKey = 'ebony123', pageId, pageToken, appSecret, userModel = MessengerUser } = options;
+
+        super('messenger', userModel);
 
         this.webhookKey = webhookKey;
         this.appSecret = appSecret;
         this.pageToken = pageToken;
         this.pageId = pageId;
         this.route = route;
-
-        this.userModel = userModel;
-
     }
 
     initWebhook() {
