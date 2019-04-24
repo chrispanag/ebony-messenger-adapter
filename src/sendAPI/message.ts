@@ -42,24 +42,24 @@ export class Message {
     }
 
     serialize(): SerializedMessage {
+        const obj: any = {};
+
+        if (this.text && this.attachment) {
+            throw new Error("Message can't have both text and attachment!")
+        }
+
         if (this.attachment) {
-            const attachment = this.attachment.serialize();
-            return {
-                attachment
-            };
+            obj.attachment = this.attachment.serialize();
         }
 
         if (this.text) {
-            let quick_replies = null;
-            if (this.quickreplies)
-                quick_replies = this.quickreplies.map(q => q.serialize());
-
-            return {
-                text: this.text,
-                quick_replies
-            };
+            obj.text = this.text;
+        }
+        
+        if (this.quickreplies) {
+            obj.quick_replies = this.quickreplies.map(q => q.serialize());
         }
 
-        throw new Error("Serialize Message: No text or Attachment");
+        return obj;
     }
 }
