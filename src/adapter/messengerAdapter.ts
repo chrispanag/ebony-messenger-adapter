@@ -1,4 +1,5 @@
 import { GenericAdapter, User } from 'ebony-framework';
+import { UserModel } from 'ebony-framework/build/adapter'
 import webhook from './webhook';
 import { Request, Response, RequestHandler } from 'express';
 import { senderFactory } from './sender';
@@ -6,23 +7,23 @@ import messagingWebhook from '../webhooks/messaging';
 import MessengerUser from './MessengerUser';
 import { UserDataFields } from './interfaces/messengerAPI';
 
-export interface MessengerWebhookOptions {
+export interface MessengerWebhookOptions<T> {
     webhookKey?: string;
     route?: string;
     pageId: string;
     appSecret: string;
     pageToken: string;
-    userModel?: { new <T extends MessengerUser>(...params: any): T, providerName: string, userLoader: (...params: any) => any } | { new(...params: any): User, providerName: string, userLoader: (...params: any) => any }
+    userModel?: UserModel<T | MessengerUser>
 }
 
-export default class MessengerAdapter extends GenericAdapter {
+export default class MessengerAdapter<T extends MessengerUser> extends GenericAdapter<T | MessengerUser> {
     private webhookKey: string;
     private appSecret: string;
     private pageToken: string;
     private route: string;
     private pageId: string;
 
-    constructor(options: MessengerWebhookOptions) {
+    constructor(options: MessengerWebhookOptions<T>) {
         const { route = '/fb', webhookKey = 'ebony123', pageId, pageToken, appSecret, userModel = MessengerUser } = options;
 
         super('messenger', userModel);
@@ -35,7 +36,7 @@ export default class MessengerAdapter extends GenericAdapter {
     }
 
     initWebhook() {
-        const messaging = messagingWebhook({ userLoader: this.userModel.userLoader(this.pageToken), routers: this.routers });
+        const messaging = messagingWebhook({ userLoader: this.userLoader(), routers: this.routers });
 
         // Facebook specific endpoints
         this.webhook.get(this.route, this.validationEndpoint());
@@ -89,6 +90,28 @@ export default class MessengerAdapter extends GenericAdapter {
         const { getUserData } = senderFactory(pageToken);
 
         return getUserData;
+    }
+
+    public userLoader(): (id: string) => Promise<T> {
+        return async (id: string) => {
+            try {
+                const userData = await User.findByProviderId(id);
+                if (!userData) {
+                    const newUser = new this.userModel({
+                        id,
+                        provider: this.providerName
+                    }, this.pageToken) as T;
+                    await newUser.getFacebookData();
+                    await newUser.save();
+
+                    return newUser;
+                }
+                
+                return new MessengerUser(userData, this.pageToken) as T;
+            } catch (err) {
+                throw err;
+            }
+        }
     }
 
 }
