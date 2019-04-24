@@ -36,11 +36,11 @@ export default class MessengerUser extends User {
     public static userLoader(pageToken: string) {
         return async (id: string) => {
             try {
-                const userData = await User.findByProviderId(id);
+                const userData = await this.findByProviderId(id);
                 if (!userData) {
-                    const newUser = new MessengerUser({
+                    const newUser = new this({
                         id,
-                        provider: MessengerUser.providerName
+                        provider: this.providerName
                     }, pageToken);
                     await newUser.getFacebookData();
                     await newUser.save();
@@ -48,7 +48,7 @@ export default class MessengerUser extends User {
                     return newUser;
                 }
                 
-                return new MessengerUser(userData, pageToken);
+                return new this(userData, pageToken);
             } catch (err) {
                 throw err;
             }
