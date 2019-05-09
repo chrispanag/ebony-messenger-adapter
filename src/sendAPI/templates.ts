@@ -10,7 +10,7 @@
 
 import { TemplateAttachment } from './attachments';
 import { Button } from './buttons';
-import { ListElementInput, ElementInput } from './interfaces';
+import { ElementInput, ListTemplateOptions, GenericTemplateOptions } from './interfaces';
 
 /** 
  * A Button Template Class
@@ -37,6 +37,7 @@ export class ButtonTemplate extends TemplateAttachment {
     }
 }
 
+
 /**
  * A GenericTemplate
  * @extends TemplateAttachment
@@ -50,7 +51,7 @@ export class GenericTemplate extends TemplateAttachment {
      * @param {string} options.image_aspect_ratio - The aspect ratio of the card elements' image ("square"|"horizontal")
      * @param {string} sharable - If the Generic Template is sharable by the user ("false|"true")
      */
-    constructor({ elements = [], image_aspect_ratio = "horizontal", sharable = "false" }) {
+    constructor({ elements, image_aspect_ratio = "horizontal", sharable = "false" }: GenericTemplateOptions) {
         super({
             template_type: "generic",
             elements,
@@ -77,7 +78,7 @@ export class ListTemplate extends TemplateAttachment {
      * Creates a ListTemplate
      * @param {ListOptions} options - The options of the ListTemplate
      */
-    constructor({ elements = [], buttons = [], large = false }: { elements: any[], buttons: Button[], large: boolean }) {
+    constructor({ elements, buttons = [], large = false }: ListTemplateOptions) {
         let top_element_style = "compact";
         if (large)
             top_element_style = "large";
