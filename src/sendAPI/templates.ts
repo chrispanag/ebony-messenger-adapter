@@ -10,7 +10,7 @@
 
 import { TemplateAttachment } from './attachments';
 import { Button } from './buttons';
-import { ElementInput, ListTemplateOptions, GenericTemplateOptions } from './interfaces';
+import { ElementInput, ListTemplateOptions, GenericTemplateOptions, ListElementInput } from './interfaces';
 
 /** 
  * A Button Template Class
