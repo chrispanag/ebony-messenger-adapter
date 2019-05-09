@@ -92,6 +92,13 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
         return getUserData;
     }
 
+    public handover() {
+        const pageToken = this.pageToken;
+        const { handover } = senderFactory(pageToken);
+
+        return handover;
+    }
+
     public userLoader(): (id: string) => Promise<T> {
         return async (id: string) => {
             try {

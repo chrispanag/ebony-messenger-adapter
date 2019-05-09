@@ -20,6 +20,9 @@ import fetch from 'node-fetch';
 * @property {?type} type - The type of the message
 */
 
+const fbApiUrl = "https://graph.facebook.com";
+const fbApiVersion = "v2.11"
+
 /**
  * Creates a sender function
  */
@@ -71,16 +74,21 @@ export function senderFactory(pageToken: string) {
         return getUserDataCall(id, fields, qs);
     }
 
+    function handover(id: string, targetAppId: string = "263902037430900", metadata?: string) {
+        return passThreadControl(id, qs, targetAppId, metadata);
+    }
+
     return {
         send,
         senderAction,
-        getUserData
+        getUserData,
+        handover
     };
 }
 
 async function sendAPI(body: SendAPIBody, qs: string) {
     try {
-        const rsp = await fetch(`https://graph.facebook.com/me/messages?${qs}`, {
+        const rsp = await fetch(`${fbApiUrl}/me/messages?${qs}`, {
             body: JSON.stringify(body),
             method: 'POST',
             headers: {
@@ -104,7 +112,7 @@ async function sendAPI(body: SendAPIBody, qs: string) {
 async function getUserDataCall(id: string, fields: UserDataFields[], qs: string) {
     const query = fields.join(',');
     try {
-        const rsp = await fetch(`https://graph.facebook.com/v2.11/${id}?fields=${query}&${qs}`);
+        const rsp = await fetch(`${fbApiUrl}/${fbApiVersion}/${id}?fields=${query}&${qs}`);
         const json = await rsp.json();
 
         if (json.error && json.error.message) {
@@ -116,4 +124,39 @@ async function getUserDataCall(id: string, fields: UserDataFields[], qs: string)
         // TODO: Handle errors
         throw err;
     }
+}
+
+async function passThreadControl(id: string, qs: string, targetAppId: string = "263902037430900", metadata?: string) {
+    const bodyWithoutMetadata = {
+        recipient: {
+            id
+        },
+        target_app_id: targetAppId
+    };
+    const bodyWithMetadata = Object.assign({ metadata }, bodyWithoutMetadata);
+
+    const body = metadata ? bodyWithMetadata : bodyWithoutMetadata;
+
+    try {
+        const rsp = await fetch(`${fbApiUrl}/${fbApiVersion}/me/pass_thread_control?${qs}`, {
+            body: JSON.stringify(body),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const json = await rsp.json();
+
+        if (json.error && json.error.message) {
+            throw new Error(json.error.message);
+        }
+
+        return json;
+    } catch (err) {
+
+        // TODO: Handle errors
+        throw err;
+    }
+
 }
