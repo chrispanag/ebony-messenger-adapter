@@ -71,28 +71,28 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
         return (id: string) => senderAction(id, "typing_on");
     }
 
-    public stopsTyping() {
+    get stopsTyping() {
         const pageToken = this.pageToken;
         const { senderAction } = senderFactory(pageToken);
 
         return (id: string) => senderAction(id, "typing_on");
     }
 
-    public markSeen() {
+    get markSeen() {
         const pageToken = this.pageToken;
         const { senderAction } = senderFactory(pageToken);
 
         return (id: string) => senderAction(id, "mark_seen");
     }
 
-    public getUserData() {
+    get getUserData() {
         const pageToken = this.pageToken;
         const { getUserData } = senderFactory(pageToken);
 
         return getUserData;
     }
 
-    public handover() {
+    get handover() {
         const pageToken = this.pageToken;
         const { handover } = senderFactory(pageToken);
 
