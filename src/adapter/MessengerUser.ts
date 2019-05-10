@@ -25,7 +25,7 @@ export default class MessengerUser extends User {
     }
 
     async getFacebookData() {
-        const userData = await this.getUserData(this.id, [UserDataFields.firstName, UserDataFields.lastName, UserDataFields.gender]);
+        const userData = await this.getUserData(this.id, [UserDataFields.firstName, UserDataFields.lastName]);
         const { first_name = '', last_name = '', gender = "male" } = userData;
 
         this.firstName = first_name;
