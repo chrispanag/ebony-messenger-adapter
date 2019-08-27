@@ -1,13 +1,14 @@
 import { MessagingEntry } from "../adapter/interfaces/messengerWebhook";
-import { IRouters } from "ebony-framework/build/adapter"
+import { IRouters, EbonyHandlers } from "ebony-framework/build/adapter"
 import MessengerUser from "../adapter/MessengerUser";
 
 interface MessagingWebhookOptions {
     routers: IRouters;
     userLoader: (id: string) => Promise<MessengerUser>;
+    handlers: EbonyHandlers;
 }
 
-export default function messagingWebhook({ userLoader, routers }: MessagingWebhookOptions): (e: MessagingEntry) => Promise<void> {
+export default function messagingWebhook({ userLoader, routers, handlers }: MessagingWebhookOptions): (e: MessagingEntry) => Promise<void> {
     return async (e: MessagingEntry) => {
         const user = await userLoader(e.sender.id);
         if (e.message) {
@@ -22,7 +23,9 @@ export default function messagingWebhook({ userLoader, routers }: MessagingWebho
                     throw new Error("Not implemented");
                 }
                 // TODO: Improve dat
-                (routerExists(routers.TextMatcher).ruleMatcher(e.message))(user);
+                if (handlers.text) {
+                    handlers.text(e.message, e.message.nlp, user);
+                }
                 return;
             }
             if (e.message.attachments) {

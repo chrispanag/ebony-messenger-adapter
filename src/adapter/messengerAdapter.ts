@@ -36,7 +36,7 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
     }
 
     initWebhook() {
-        const messaging = messagingWebhook({ userLoader: this.userLoader(), routers: this.routers });
+        const messaging = messagingWebhook({ userLoader: this.userLoader(), routers: this.routers, handlers: this.handlers });
 
         // Facebook specific endpoints
         this.webhook.get(this.route, this.validationEndpoint());

@@ -1,3 +1,5 @@
+import { WitNLP } from "ebony-framework/build/interfaces/nlp";
+
 export interface MessengerWebhookBody {
     object: string;
     entry: FacebookWebhookEntry[]
@@ -34,6 +36,7 @@ export interface MessagingEntry {
 interface Message {
     mid: string;
     text: string;
+    nlp: WitNLP;
 
     attachments?: {
         type: string;
