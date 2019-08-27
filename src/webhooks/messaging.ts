@@ -25,6 +25,8 @@ export default function messagingWebhook({ userLoader, routers, handlers }: Mess
                 // TODO: Improve dat
                 if (handlers.text) {
                     handlers.text(e.message, e.message.nlp, user);
+                } else {
+                    throw new Error("No text handler!");
                 }
                 return;
             }
