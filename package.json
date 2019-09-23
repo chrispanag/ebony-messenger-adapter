@@ -27,7 +27,7 @@
   "dependencies": {
     "@types/express": "^4.16.1",
     "@types/node-fetch": "^2.3.2",
-    "ebony-framework": "github:chrispanag/ebony#typescript",
+    "ebony-framework": "github:chrispanag/ebony",
     "express": "^4.16.4",
     "node-fetch": "^2.3.0"
   },
