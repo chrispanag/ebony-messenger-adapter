@@ -1,11 +1,12 @@
 import { MessagingEntry } from "../adapter/interfaces/messengerWebhook";
 import { IRouters, EbonyHandlers } from "ebony-framework/build/adapter"
 import MessengerUser from "../adapter/MessengerUser";
+import { User } from "ebony-framework";
 
 interface MessagingWebhookOptions<T extends MessengerUser> {
     routers: IRouters;
     userLoader: (id: string) => Promise<T>;
-    handlers: EbonyHandlers<T>;
+    handlers: EbonyHandlers<User>;
 }
 
 export default function messagingWebhook<T extends MessengerUser>({ userLoader, routers, handlers }: MessagingWebhookOptions<T>): (e: MessagingEntry) => Promise<void> {
