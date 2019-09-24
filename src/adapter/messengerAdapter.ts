@@ -7,16 +7,16 @@ import messagingWebhook from '../webhooks/messaging';
 import MessengerUser from './MessengerUser';
 import { UserDataFields } from './interfaces/messengerAPI';
 
-export interface MessengerWebhookOptions<T> {
+export interface MessengerWebhookOptions<T extends MessengerUser> {
     webhookKey?: string;
     route?: string;
     pageId: string;
     appSecret: string;
     pageToken: string;
-    userModel?: UserModel<T | MessengerUser>
+    userModel?: UserModel<T>
 }
 
-export default class MessengerAdapter<T extends MessengerUser> extends GenericAdapter<T | MessengerUser> {
+export default class MessengerAdapter<T extends MessengerUser> extends GenericAdapter<T> {
     private webhookKey: string;
     private appSecret: string;
     private pageToken: string;
