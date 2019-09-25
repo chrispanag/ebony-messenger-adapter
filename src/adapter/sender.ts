@@ -32,23 +32,22 @@ export function senderFactory(pageToken: string) {
 
     /**
      * Sends a message to the user with the id
-     * @param {!string} id - The id of the user
-     * @param {!Message} message - The message to be sent
-     * @param {?MessagingOptions} options - The sending options (OPTIONAL)
-     * @returns {Promise} - Returns a promise
      */
     function send(id: string, message: Message, options: MessagingOptions = {}) {
         const { tag = null, notification_type = "REGULAR", type = "RESPONSE" } = options;
 
-        if (!id)
+        if (!id) {
             throw new Error("[Error] Send: No user id is specified!");
+        }
 
-        if (!message)
+        if (!message) {
             throw new Error("[Error] No message passed!");
+        }
 
         let messaging_type = type;
-        if (tag)
+        if (tag) {
             messaging_type = "MESSAGE_TAG";
+        }
 
         const body = {
             recipient: { id },

@@ -38,10 +38,10 @@ interface Message {
     text: string;
     nlp: WitNLP;
 
-    attachments?: {
+    attachments?: Array<{
         type: string;
         payload: any;
-    };
+    }>;
 
 
     quick_reply?: {

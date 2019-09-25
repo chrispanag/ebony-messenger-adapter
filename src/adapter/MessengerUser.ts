@@ -1,4 +1,4 @@
-import User from "ebony-framework/build/models/User";
+import { User } from "ebony-framework";
 import { senderFactory } from './sender';
 import { UserDataFields } from "./interfaces/messengerAPI";
 

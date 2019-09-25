@@ -1,8 +1,8 @@
 import { RequestHandler, Request, Response } from 'express';
-import { MessengerWebhookBody } from './interfaces/messengerWebhook';
+import { MessengerWebhookBody, MessagingEntry } from './interfaces/webhook';
 
 interface MessengerWebhooks {
-    messaging?: (param: any) => void;
+    messaging?: (e: MessagingEntry) => void;
     standby?: (param: any) => void;
     changes?: (param: any) => void;
 }

@@ -1,4 +1,4 @@
-import { MessagingEntry } from "../adapter/interfaces/messengerWebhook";
+import { MessagingEntry } from "../adapter/interfaces/webhook";
 import { IRouters, EbonyHandlers } from "ebony-framework/build/adapter"
 import MessengerUser from "../adapter/MessengerUser";
 import { User } from "ebony-framework";
@@ -9,7 +9,9 @@ interface MessagingWebhookOptions<T extends User> {
     handlers: EbonyHandlers<T>;
 }
 
-export default function messagingWebhook<T extends MessengerUser>({ userLoader, routers, handlers }: MessagingWebhookOptions<T>): (e: MessagingEntry) => Promise<void> {
+export default function messagingWebhook<T extends MessengerUser>(options: MessagingWebhookOptions<T>): (e: MessagingEntry) => Promise<void> {
+    const { userLoader, routers, handlers } = options;
+
     return async (e: MessagingEntry) => {
         const user = await userLoader(e.sender.id);
         if (e.message) {
@@ -23,7 +25,6 @@ export default function messagingWebhook<T extends MessengerUser>({ userLoader, 
                     }
                     throw new Error("Not implemented");
                 }
-                // TODO: Improve dat
                 if (handlers.text) {
                     handlers.text(e.message, e.message.nlp, user);
                 } else {
@@ -32,9 +33,12 @@ export default function messagingWebhook<T extends MessengerUser>({ userLoader, 
                 return;
             }
             if (e.message.attachments) {
-
-                // TODO: attachment handler
-                throw new Error("Not implemented");
+                if (handlers.attachment) {
+                    e.message.attachments.forEach((a) => handlers.attachment ? handlers.attachment(user, a) : null);
+                } else {
+                    throw new Error("No attachment handler!");
+                }
+                return;
             }
             throw new Error("Not implemented");
         }
@@ -82,7 +86,7 @@ export default function messagingWebhook<T extends MessengerUser>({ userLoader, 
     }
 }
 
-function routerExists<T>(router: T | undefined): T | never {
+function routerExists<T>(router: T | undefined): T {
     if (typeof router === 'undefined') {
         throw new Error("Router is undefined");
     }
