@@ -1,7 +1,5 @@
 # EBoNy Framework - SendAPI Submodule
 
-[![Gitter](https://badges.gitter.im/ebony-framework/community.svg)](https://gitter.im/ebony-framework/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
 A subsystem for EBoNy Framework compatible SendAPI message elements.
 
 ## Documentation
