@@ -1,6 +1,6 @@
 # Ebony Messenger Adapter
 
-A messenger platform adapter for the Ebony Framework
+A messenger platform adapter for the [Ebony Framework](https://github.com/chrispanag/ebony)
 
 ## Documentation
 
