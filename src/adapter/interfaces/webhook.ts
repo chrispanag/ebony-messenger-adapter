@@ -36,7 +36,7 @@ export interface MessagingEntry {
 interface Message {
     mid: string;
     text: string;
-    nlp: WitNLP;
+    nlp?: WitNLP;
 
     attachments?: Array<{
         type: string;
