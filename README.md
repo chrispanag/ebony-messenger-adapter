@@ -1,8 +1,10 @@
-# EBoNy Framework - SendAPI Submodule
+# Ebony Messenger Adapter
 
-A subsystem for EBoNy Framework compatible SendAPI message elements.
+A messenger platform adapter for the [Ebony Framework](https://github.com/chrispanag/ebony)
 
 ## Documentation
+
+### !!! This documentation might be outdated. It will be updated soon !!!
 
 ### Message
 
