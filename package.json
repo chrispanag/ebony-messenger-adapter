@@ -36,7 +36,7 @@
     "typescript": "^3.6.3"
   },
   "engines": {
-    "node": "^8.9.0"
+    "node": ">=8.9.0"
   },
   "files": [
     "build/**/*"
