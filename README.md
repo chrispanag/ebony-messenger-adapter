@@ -1,3 +1,7 @@
+# This package/repository is deprecated! Please check the [@ebenos/messenger-adapter](https://www.npmjs.com/package/@ebenos/messenger-adapter) package and the [ebony repository](https://github.com/chrispanag/ebony).
+
+___
+
 # Ebony Messenger Adapter
 
 A messenger platform adapter for the [Ebony Framework](https://github.com/chrispanag/ebony)
